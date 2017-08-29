@@ -75,5 +75,11 @@ var handleRequest = function(request, response) {
   }
 };
 
-var www = http.createServer(handleRequest);
-www.listen(port);
+this.server = http.createServer(handleRequest);
+exports.listen = function() {
+  this.server.listen.apply(this.server, arguments);
+}
+
+exports.close = function(callback) {
+  this.server.close(callback);
+}

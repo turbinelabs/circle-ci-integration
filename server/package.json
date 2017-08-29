@@ -1,0 +1,11 @@
+{
+  "name": "all_in_one_server",
+  "description": "A server for the Turbine Labs all-in-one tutorial",
+  "version": "0.0.1",
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
