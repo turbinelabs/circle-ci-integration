@@ -2,7 +2,7 @@ version: 2
 jobs:
   test-server:
     docker:
-      - image: node:4.4
+      - image: node:8.4.0
     environment:
       DEBIAN_FRONTEND: noninteractive
     steps:
