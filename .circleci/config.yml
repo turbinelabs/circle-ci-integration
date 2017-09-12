@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test-server:
+  build:
     docker:
       - image: node:8.4.0
     environment:
@@ -50,17 +50,17 @@ workflows:
   version: 2
   build:
     jobs:
-      - test-server
+      - build
   dev_deploy:
     jobs:
-      - test-server:
+      - build:
           filters:
             branches:
               only:
                 - /server-dev-.*/
       - push-dev-server:
           requires:
-            - test-server
+            - build
           filters:
             branches:
               only:
@@ -74,7 +74,7 @@ workflows:
                 - /server-dev-.*/
   prod_deploy:
     jobs:
-      - test-server:
+      - build:
           filters:
             tags:
               only:
@@ -83,7 +83,7 @@ workflows:
               ignore: /.*/
       - push-prod-server:
           requires:
-            - test-server
+            - build
           filters:
             tags:
               only:
