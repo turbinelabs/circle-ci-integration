@@ -104,9 +104,9 @@ This is defined as a job in config.yaml as
 
 ```
 jobs:
-  test-server:
+  build:
     docker:
-      - image: node:4.4
+      - image: node:8.4.0
     environment:
       DEBIAN_FRONTEND: noninteractive
     steps:
@@ -122,7 +122,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - test-server:
+      - build:
           filters:
             branches:
               ignore:
@@ -151,13 +151,13 @@ found in the gcloud-build subdirectory.
 
 ## Delivery
 
-The delivery task uses the gcloud-build-base image, checks out code, builds a
+The delivery task uses the gcloud-build image, checks out code, builds a
 docker image from our source, and pushes it to GCR.
 
 ```
   push-dev-server:
     docker:
-      - image: turbinelabs/gcloud-build-base:0.1
+      - image: turbinelabs/gcloud-build:0.12.0
     environment:
       DEBIAN_FRONTEND: noninteractive
     steps:
@@ -171,7 +171,7 @@ docker image from our source, and pushes it to GCR.
 
 ## Deploy
 
-The deploy task also uses the gcloud-build-base image. It checks out code, but
+The deploy task also uses the gcloud-build image. It checks out code, but
 instead of building and pushing code to gcr, it creates a kubectl spec for the
 image we pushed in the delivery phase, and creates a new deployment on your GKE
 cluster.
@@ -179,7 +179,7 @@ cluster.
 ```
   deploy-dev-server:
     docker:
-      - image: turbinelabs/gcloud-build-base:0.1
+      - image: turbinelabs/gcloud-build:0.12.0
     steps:
       - checkout
       - run: openrc boot
@@ -213,14 +213,14 @@ and then creates a new deployment.
 ```
   dev_deploy:
     jobs:
-      - test-server:
+      - build:
           filters:
             branches:
               only:
                 - /server-dev-.*/
       - push-dev-server:
           requires:
-            - test-server
+            - build
           filters:
             branches:
               only:
@@ -244,7 +244,7 @@ helps keep the prod space uncluttered.
 ```
   prod_deploy:
     jobs:
-      - test-server:
+      - build:
           filters:
             tags:
               only:
@@ -253,7 +253,7 @@ helps keep the prod space uncluttered.
               ignore: /.*/
       - push-prod-server:
           requires:
-            - test-server
+            - build
           filters:
             tags:
               only:
@@ -288,7 +288,7 @@ CircleCI should see this branch push, match the branch pattern against the
 dev_deploy workflow, and begin a build. You can go to
 
 `https://circleci.com/gh/<your github org>/workflows/<your github repo>`
-
+    
 To follow the progress. When its finished, you should see a new deployment on
 your Kubernetes cluster
 
@@ -373,13 +373,13 @@ branch and tag naming conventions. Note that none of these steps _automatically_
 releases the code to customers, which gives us an opportunity to test and verify
 changes on production infrastructure before we test with customers.
 
-## Test in Production
+## Verify in Production
 
 Navigate to your all-in-one application. If you completed the Kubernetes guide,
 your all-in-one application should be showing all green boxes. You have created
 two new deployments, but they haven't yet been released to prod customers.
 
-To test this before releasing to customers, add a query parameter to your
+To verify this before releasing to customers, add a query parameter to your
 request that indicates the version of code you want your request routed to.
 `http://<your service ip>/?X-Tbn-Version=<your deployment version>`,
 e.g.
@@ -391,17 +391,19 @@ to green boxes.
 Behind the scenes the all-in-one client is converting this query parameter to a
 request header. Houston has configured tbnproxy to inspect this header, and
 route traffic to a member of the all-in-one-server cluster whose version label
-matches the value of the header. You can test your new release on production
+matches the value of the header. You can verify your new release on production
 infrastructure before releasing it to customers.
 
-## Better Testing in Production
+## Better Verification in Production
 
-With a browser plugin you can do even better. Houston Chrome Extension is
-included in this repo, and talks to the Houston API, retrieving a list of
-deployed instances. It allows you to set cookies on a page of the form
-`Tbn-<service name>-Version=<desired version`.  By adding a routing rule,
-Houston can inspect these cookies and route traffic to an appropriate service
-instance.
+With a browser plugin you can do even better. Houston Chrome Extension
+(available in the
+(Chrome Store)[https://chrome.google.com/webstore/detail/houston-by-turbine-labs/ldjclbjgidofaklhdoidoakinknpiecc?hl=en-US]
+or as source (on github)[https://github.com/turbinelabs/houston-crx])
+talks to the Houston API, retrieving a list of deployed instances. It allows you
+to set cookies on a page of the form  `Tbn-<service name>-Version=<desired
+version`.  With the addition of a cookie-based routing rule, Houston can inspect
+these cookies and route traffic to an appropriate service instance.
 
 To execute this workflow, first add a request specific override
 * In https://app.turbinelabs.io, navigate to your zone, then release groups, and
@@ -414,15 +416,8 @@ To execute this workflow, first add a request specific override
 * The Constraint key should be "version", and the Constraint value should be
   "Tbn-All-in-one-server"
 
-Now install the Houston Chrome extension
-* Clone this repo
-* In Chrome, open a tab to chrome://extensions
-* Check the Developer Mode checkbox
-* Click the Load Unpacked extension... button
-* Select `<repo base directory>/src`
-
-Now we can use the plugin to dynamically select a version of the
-server to view.
+Now install the plugin, and use it to dynamically select a version of the server
+to view.
 * Navigate to your all in one demo page
 * Right click anywhere on the page
 * Look for the Houston Chrome extension context menu

@@ -39,8 +39,8 @@ then
 elif [ $TBN_STAGE = "prod" ]
 then
     export TBN_VERSION=$CIRCLE_TAG
-    export GIT_TAG=$GIT_TAG
-    echo "Circle branch set to $CIRCLE_BRANCH, executing $TBN_STAGE deploy of version $TBN_VERSION"
+    export GIT_TAG=$CIRCLE_TAG
+    echo "Circle branch tag set to $CIRCLE_TAG, executing $TBN_STAGE deploy of version $TBN_VERSION"
 fi
 
 REPLACEMENT_VARS=(GCLOUD_PROJECT_ID GIT_TAG GIT_SHA GIT_BRANCH DEPLOY_DATE TBN_STAGE TBN_VERSION)
@@ -56,6 +56,7 @@ DEPLOYMENT_NAME=all-in-one-server-$TBN_STAGE-$TBN_VERSION
 echo "DEPLOY SPEC IS:"
 cat $TEMPLATE_FILE | sed "$REPLACEMENT_SED"
 
+echo "checking for existing deployment"
 kubectl get deployment $DEPLOYMENT_NAME
 if [ $? -eq 0 ]
 then

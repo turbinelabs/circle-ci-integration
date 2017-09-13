@@ -1,5 +1,5 @@
 #@OSS_ARTIFACT=true
-FROM node:4.4
+FROM node:8.4.0
 EXPOSE 8080
 COPY server.js .
 COPY main.js .
