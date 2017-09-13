@@ -146,8 +146,10 @@ execute tasks based on branch or tag names.
 The CircleCI examples use an image that installs the GCloud SDK from the
 internet on each build run. We've created a build image here that has the GCloud
 SDK installed, and just configures project/auth settings on each start. This
-saves a significant amount of time on each build. The base image source can be
-found in the gcloud-build subdirectory.
+saves a significant amount of time on each build. The source for this image can
+be found [on github](https://github.com/turbinelabs/gcloud-build), and we
+publish images
+to [dockerhub](https://hub.docker.com/r/turbinelabs/gcloud-build/). 
 
 ## Delivery
 
