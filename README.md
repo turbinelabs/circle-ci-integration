@@ -400,8 +400,8 @@ infrastructure before releasing it to customers.
 
 With a browser plugin you can do even better. Houston Chrome Extension
 (available in the
-(Chrome Store)[https://chrome.google.com/webstore/detail/houston-by-turbine-labs/ldjclbjgidofaklhdoidoakinknpiecc?hl=en-US]
-or as source (on github)[https://github.com/turbinelabs/houston-crx])
+[Chrome Store](https://chrome.google.com/webstore/detail/houston-by-turbine-labs/bhigicedeaekhgjpgmpigofebngokpip?hl=en-US)
+or as source [on github](https://github.com/turbinelabs/houston-crx)
 talks to the Houston API, retrieving a list of deployed instances. It allows you
 to set cookies on a page of the form  `Tbn-<service name>-Version=<desired
 version`.  With the addition of a cookie-based routing rule, Houston can inspect
