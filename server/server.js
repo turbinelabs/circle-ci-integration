@@ -78,10 +78,10 @@ let handleRequest = (request, response) => {
   let fail = errorRate > 0 && Math.random() < errorRate
 
   console.log(
-    'Request: ' +
-      request.url +
-      (delay > 0 ? '; delay ' + delay + ' ms' : '') +
-      (fail ? '; failing' : '; OK'),
+    'Request: ',
+    request.url,
+    (delay > 0 ? '; delay ' + delay + ' ms' : ''),
+    (fail ? '; failing' : '; OK'),
   )
 
   if (delay > 0.0) {
