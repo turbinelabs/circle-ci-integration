@@ -159,7 +159,7 @@ docker image from our source, and pushes it to GCR.
 ```
   push-dev-server:
     docker:
-      - image: turbinelabs/gcloud-build:0.12.3
+      - image: turbinelabs/gcloud-build:0.12.4
     environment:
       DEBIAN_FRONTEND: noninteractive
     steps:
@@ -181,7 +181,7 @@ cluster.
 ```
   deploy-dev-server:
     docker:
-      - image: turbinelabs/gcloud-build:0.12.3
+      - image: turbinelabs/gcloud-build:0.12.4
     steps:
       - checkout
       - run: openrc boot
