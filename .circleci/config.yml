@@ -10,7 +10,7 @@ jobs:
       - run: cd server && npm install && npm test
   push-dev-server:
     docker:
-      - image: turbinelabs/gcloud-build:0.12.2
+      - image: turbinelabs/gcloud-build:0.12.3
     environment:
       DEBIAN_FRONTEND: noninteractive
     steps:
@@ -22,7 +22,7 @@ jobs:
       - run: gcloud docker -- push gcr.io/${GCLOUD_PROJECT_ID}/all-in-one-server:$CIRCLE_BRANCH
   push-prod-server:
     docker:
-      - image: turbinelabs/gcloud-build:0.12.2
+      - image: turbinelabs/gcloud-build:0.12.3
     environment:
       DEBIAN_FRONTEND: noninteractive
     steps:
@@ -34,14 +34,14 @@ jobs:
       - run: gcloud docker -- push gcr.io/${GCLOUD_PROJECT_ID}/all-in-one-server:$CIRCLE_TAG
   deploy-dev-server:
     docker:
-      - image: turbinelabs/gcloud-build:0.12.2
+      - image: turbinelabs/gcloud-build:0.12.3
     steps:
       - checkout
       - run: openrc boot
       - run: ./deploy.sh dev server/dev-deploy-template.yaml
   deploy-prod-server:
     docker:
-      - image: turbinelabs/gcloud-build:0.12.2
+      - image: turbinelabs/gcloud-build:0.12.3
     steps:
       - checkout
       - run: openrc boot
