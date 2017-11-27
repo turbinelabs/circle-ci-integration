@@ -12,7 +12,7 @@
 
 # Houston Integration with CircleCI and GKE
 
-[![Apache 2.0](https://img.shields.io/hexpm/l/plug.svg)](LICENSE)
+[![Apache 2.0](https://img.shields.io/badge/license-apache%202.0-blue.svg)](LICENSE)
 
 This project demonstrates how to utilize
 [GKE](https://cloud.google.com/container-engine/),
@@ -29,7 +29,7 @@ existing version to the newly deployed one.
 # Before You Start
 
 You'll need a GKE account, CircleCI account, and a Houston API key. This guide
-builds on the Houston  
+builds on the Houston
 [Kubernetes guide](https://docs.turbinelabs.io/guides/kubernetes.html),
 which you should complete before working through this guide.
 
@@ -149,7 +149,7 @@ SDK installed, and just configures project/auth settings on each start. This
 saves a significant amount of time on each build. The source for this image can
 be found [on github](https://github.com/turbinelabs/gcloud-build), and we
 publish images
-to [dockerhub](https://hub.docker.com/r/turbinelabs/gcloud-build/). 
+to [dockerhub](https://hub.docker.com/r/turbinelabs/gcloud-build/).
 
 ## Delivery
 
@@ -290,7 +290,7 @@ CircleCI should see this branch push, match the branch pattern against the
 dev_deploy workflow, and begin a build. You can go to
 
 `https://circleci.com/gh/<your github org>/workflows/<your github repo>`
-    
+
 To follow the progress. When its finished, you should see a new deployment on
 your Kubernetes cluster
 
@@ -425,11 +425,11 @@ to view.
 * Look for the Houston Chrome extension context menu
 * Select testbed (your zone), all-in-one-server (your cluster), and
   choose server-dev-first-deploy.
-  
+
 The boxes should change to #ffc0cb. Note that this isn't the version any
 customers would see. This is you requesting to see a specific _deployed_, but
 not _released_ version of the server code.
-  
+
 ## Incremental Release
 
 Convinced that pink is a superior color to what we've currently released, you
